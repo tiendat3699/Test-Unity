@@ -19,18 +19,28 @@ public class KeyBoardInput : MonoBehaviour
     }
     private Button button;
     private Text content;
+    public bool active {get; private set;}
     public static event Action<KeyBoardInput> onClick;
 
     private void Awake() {
         button = GetComponent<Button>();
         content = GetComponentInChildren<Text>();
+        active = value == "ON";
     }
 
     private void OnEnable() {
+        CalcSimulator.onActive += Active;
         button.onClick.AddListener(ClickButton);
     }
 
     private void ClickButton() {
-        onClick?.Invoke(this);
+        if(active) {
+            onClick?.Invoke(this);
+        }
+    }
+
+    private void Active(bool active) {
+        if(value != "ON")
+            this.active = active;
     }
 }
